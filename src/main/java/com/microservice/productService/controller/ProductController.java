@@ -39,11 +39,6 @@ public class ProductController {
 
     private final RabbitMqSender rabbitMqSender;
 
-//    @Autowired
-//    private JwtService jwtService;
-
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
 
     @GetMapping(value = "/welcome")
     public ResponseEntity<String> welcome() {
@@ -52,7 +47,6 @@ public class ProductController {
 
 
     @PostMapping(value = "/add")
-    //@PreAuthorize("hasAuthority('ROLES_ADMIN')")
     public ResponseEntity<String> addProduct(@RequestBody ProductRequest productRequest) {
         log.info("ProductController | addProduct is called");
         log.info("ProductController | addProduct | Product Request : " + productRequest);
@@ -64,7 +58,6 @@ public class ProductController {
     }
 
     @GetMapping(value = "/id")
-    //@PreAuthorize("hasAuthority('ROLES_USER')")
     public ResponseEntity<ProductResponse> getProductById(@RequestHeader(name = "ID", required = true) long productId) {
 
         log.info("ProductController | getProductById is called");
@@ -89,32 +82,12 @@ public class ProductController {
     }
 
     @DeleteMapping("/id")
-    //@PreAuthorize("hasAuthority('ROLES_ADMIN')")
     public void deleteProductById(@RequestHeader(name = "Id") long productId) {
 
         productService.deleteProductById(productId);
     }
 
-//    @PostMapping(value = "/addUser")
-//    public String addUser(@RequestBody UserInfo userInfo) {
-//
-//        return productService.addUser(userInfo);
-//    }
-
-//    @PostMapping(value = "/authenticate")
-//    public String authenticateAndGetToke(@RequestBody AuthRequest authRequest) {
-//
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-//
-//        if (authentication.isAuthenticated()) {
-//            return jwtService.generateToke(authRequest.getUsername());
-//        } else {
-//            throw new UsernameNotFoundException("UserNotFound!!");
-//        }
-//    }
-
     @GetMapping(value = "/all")
-    //@PreAuthorize("hasAuthority('ROLES_ADMIN')")
     public List<ProductResponse> getAllProducts() {
 
         return productService.getAllProducts();
@@ -123,8 +96,6 @@ public class ProductController {
     @GetMapping("/export/excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream");
-//        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-//        String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=product.xlsx";
@@ -138,13 +109,13 @@ public class ProductController {
     }
 
 
-    @PostMapping(value = "/payload",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void getPayload(@RequestBody List<ProductResponse> productResponse){
-        Map<String,ProductResponse> responseMap=new HashMap<>();
+    @PostMapping(value = "/payload", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void getPayload(@RequestBody List<ProductResponse> productResponse) {
+        Map<String, ProductResponse> responseMap = new HashMap<>();
 
-        for (ProductResponse p:productResponse
-             ) {
-          responseMap.putIfAbsent(p.getProductName(),p);
+        for (ProductResponse p : productResponse
+        ) {
+            responseMap.putIfAbsent(p.getProductName(), p);
 
         }
         productService.getProductByName(responseMap);

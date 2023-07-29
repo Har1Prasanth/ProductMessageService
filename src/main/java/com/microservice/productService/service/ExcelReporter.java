@@ -16,9 +16,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelReporter {
     private XSSFWorkbook workbook;
-
-
-  //  SXSSFWorkbook
     private XSSFSheet sheet;
     private List<ProductResponse> listProducts;
 
