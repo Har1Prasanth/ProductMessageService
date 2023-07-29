@@ -1,0 +1,23 @@
+server:
+  port: 9092
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/productdb
+    username: root
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    application:
+      name: PRODUCT-SERVICE
+  rabbitmq:
+    host: localhost
+    password: guest
+    port: 15672
+    username: guest
+    exchange: product.exchange
+    queue: product.queue
+    routingkey: product.routingkey
